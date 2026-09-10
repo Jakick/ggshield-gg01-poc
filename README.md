@@ -1,17 +1,18 @@
 # ggshield GG-01 reproduction
 
 This harmless repository demonstrates that ggshield 1.54.0 automatically loads
-a tracked repository `.env` and passes its variables to Git. The `.env` selects
-a tracked executable through `GIT_EXTERNAL_DIFF`. A normal pre-commit scan then
+a tracked repository `.env` and passes its variables to ggshield and Git. The
+`.env` selects a repository-controlled auth cache and a tracked executable
+through `GIT_EXTERNAL_DIFF`. A normal pre-commit scan trusts the cache and then
 executes that file while ggshield obtains the staged diff.
 
 ## Prerequisites
 
 - Git
-- An installed and authenticated ggshield 1.54.0
+- An installed ggshield 1.54.0
 
-No Docker, plugin, custom Git configuration, custom server, or elevated
-privileges are required.
+No GitGuardian account or API credential, Docker, plugin, custom Git
+configuration, custom server, or elevated privileges are required.
 
 ## Reproduce
 
@@ -37,7 +38,9 @@ network access and makes no change outside this checkout.
 
 ## Why this is security-relevant
 
-The `.env` file and executable helper survive cloning as repository-controlled
-content. ggshield loads `.env` with overriding semantics before invoking
-`git diff --staged`; Git interprets `GIT_EXTERNAL_DIFF` and executes the helper
-with the developer's privileges.
+The `.env`, cache entry, and executable helper survive cloning as
+repository-controlled content. ggshield loads every `.env` variable with
+overriding semantics. This redirects its own authentication cache to the
+repository and supplies the matching cache key. After trusting that cache,
+ggshield invokes `git diff --staged`; Git interprets `GIT_EXTERNAL_DIFF` and
+executes the helper with the developer's privileges.
