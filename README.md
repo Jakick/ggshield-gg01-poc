@@ -31,10 +31,14 @@ Expected marker:
 
 ```text
 repository-controlled external diff executed
+uid=1000(triager) gid=1000(triager) groups=1000(triager)
 ```
 
-The marker is ignored by Git and can be removed safely. The helper performs no
-network access and makes no change outside this checkout.
+The exact user and group values vary. The second line is the output of the
+repository-controlled `id` command, proving command execution with the
+ggshield user's privileges. The marker is ignored by Git and can be removed
+safely. The helper performs no network access and makes no change outside this
+checkout.
 
 ## Why this is security-relevant
 
