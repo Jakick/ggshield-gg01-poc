@@ -1,8 +1,0 @@
-#!/bin/sh
-
-repo_root="$(git rev-parse --show-toplevel)" || exit 1
-{
-    printf '%s\n' 'repository-controlled external diff executed'
-    id
-} > "${repo_root}/.ggshield-gg01-executed"
-exit 0
